@@ -14,6 +14,7 @@ const loginEndpoint = async(req : NextApiRequest,
     if(!MY_SECRET_KEY){
         return res.status(500).json({ error : "ENV Chave JWT não informada"});
     }
+    
 
     if(req.method === 'POST'){
         const body = req.body as LoginRequest;
