@@ -1,9 +1,11 @@
 import moment from "moment";
 import { NextPage } from "next";
+import { Task } from "../types/Task";
+import { Item } from './Item';
 
 
 type ListProps = {
-    tasks : any[]
+    tasks : Task[]
 }
 
 export const List : NextPage<ListProps> = ({ tasks }) => {
@@ -11,7 +13,7 @@ export const List : NextPage<ListProps> = ({ tasks }) => {
         <div className={"container-list" + (tasks && tasks.length > 0 ? "" : " empty")}>
             { tasks && tasks.length > 0 
                 ?  
-                    tasks.map(task => <p>{task.name}</p>)
+                    tasks.map(task => <Item task={task}/>)
                 :
                 <>
                     <img src="/empty.svg" alt="Nenhuma tarefa encontrada"/>
