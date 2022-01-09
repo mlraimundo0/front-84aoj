@@ -53,7 +53,7 @@ export const Filter : NextPage<FilterProps> = ({
                 </form>
             </div>
             {showFilters && 
-                <div className="filterMobile">
+                <div className="filter-mobile">
                     <div>
                         <label>Período de: </label>
                         <input type="date" 
