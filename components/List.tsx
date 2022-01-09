@@ -2,6 +2,7 @@ import moment from "moment";
 import { NextPage } from "next";
 import { useState } from "react";
 import { executeRequest } from "../services/api";
+import { ResponseError } from "../types/ResponseError";
 import { Task } from "../types/Task";
 import { Item } from './Item';
 import { CrudModal } from './Modal';
@@ -57,9 +58,11 @@ export const List: NextPage<ListProps> = ({ tasks, getFilteredList }) => {
             await getFilteredList();
             closeModal();
         } catch (e) {
-            if (e?.response?.data?.error) {
-                console.log(e?.response);
-                setErrorMsg(e?.response?.data?.error);
+            console.log(e);
+            const error = e as ResponseError;
+            if (error.response?.data?.error) {
+                
+                setErrorMsg(error.response?.data?.error);
                 return;
             }
             console.log(e);
@@ -77,10 +80,10 @@ export const List: NextPage<ListProps> = ({ tasks, getFilteredList }) => {
             await executeRequest('task?id='+id, 'DELETE');
             await getFilteredList();
             closeModal();
-        } catch (e) {
-            if (e?.response?.data?.error) {
-                console.log(e?.response);
-                setErrorMsg(e?.response?.data?.error);
+        } catch (e: any) {
+          const error = e as ResponseError;
+            if (error?.response?.data?.error) {                
+                setErrorMsg(error.response?.data?.error);
                 return;
             }
             console.log(e);

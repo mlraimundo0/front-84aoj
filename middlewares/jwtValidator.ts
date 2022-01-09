@@ -1,5 +1,4 @@
 import type {NextApiRequest, NextApiResponse, NextApiHandler} from 'next';
-import mongoose from 'mongoose';
 import { DefaultResponseMsg } from '../types/DefaultResponseMsg';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 

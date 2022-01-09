@@ -1,8 +1,8 @@
 import { NextPage } from "next";
 import { useState } from "react"
 import { executeRequest } from "../services/api";
-import { LoginRequest } from "../types/LoginRequest";
 import { LoginResponse } from "../types/LoginResponse";
+import { ResponseError } from "../types/ResponseError";
 
 type LoginProps = {
     setToken(s: string) : void
@@ -37,9 +37,9 @@ export const Login : NextPage<LoginProps> = ({setToken}) => {
                 setToken(loginResponse.token);
             }
         } catch (e : any) {
-            if(e?.response?.data?.error){
-                console.log(e?.response);
-                setError(e?.response?.data?.error);
+          const error = e as ResponseError;
+            if(error?.response?.data?.error){                
+                setError(error?.response?.data?.error);
                 return;
             }
             console.log(e);

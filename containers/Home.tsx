@@ -8,19 +8,19 @@ import { List } from "../components/List";
 import { executeRequest } from "../services/api";
 import { Task } from "../types/Task";
 import {CrudModal} from '../components/Modal';
+import { ResponseError } from "../types/ResponseError";
 type HomeProps = {
     setToken(s: string) : void
 }
 
 export const Home : NextPage<HomeProps> = ({setToken}) => {
 
-    // state Filter
     const [previsionDateStart, setPrevisionDateStart] = useState('');
     const [previsionDateEnd, setPrevisionDateEnd] = useState('');
     const [status, setStatus] = useState('0');
     const [tasks, setTasks] = useState<Task[]>([]);
 
-    const sair = () =>{
+    const close = () =>{
         localStorage.removeItem('accessToken');
         localStorage.removeItem('userName');
         localStorage.removeItem('userEmail');
@@ -52,7 +52,6 @@ export const Home : NextPage<HomeProps> = ({setToken}) => {
     }, [status, previsionDateStart, previsionDateEnd]);
 
 
-    // state Modal
     const [showModal, setShowModal] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
     const [name, setName] = useState('');
@@ -80,10 +79,11 @@ export const Home : NextPage<HomeProps> = ({setToken}) => {
             await executeRequest('task', 'POST', body);
             await getFilteredList();
             closeModal();
-        }catch(e){
-            if(e?.response?.data?.error){
-                console.log(e?.response);
-                setErrorMsg(e?.response?.data?.error);
+        }catch(e: any){
+            const error = e as ResponseError;
+            if(error.response?.data?.error){
+                console.log(error.response);
+                setErrorMsg(error.response?.data?.error);
                 return;
             }
             console.log(e);
@@ -93,7 +93,7 @@ export const Home : NextPage<HomeProps> = ({setToken}) => {
 
     return (
     <>
-        <Header sair={sair} showModal={() => setShowModal(true)}/>
+        <Header close={close} showModal={() => setShowModal(true)}/>
         <Filter 
             previsionDateStart={previsionDateStart}
             previsionDateEnd={previsionDateEnd}
